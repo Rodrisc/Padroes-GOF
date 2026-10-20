@@ -1,24 +1,26 @@
 <?php
-    include_once('./Creator.php');
+    include_once('./VeiculoFactory.php');
     class Main{
         protected $obj;
-        function main(){
+     
+        public function main() {
             $sair = false;
-            while(!$sair){
+            
+            while (!$sair) {
                 $opcao = $this->input('Digite sua opção: (carro/moto/sair): ');
-                switch($opcao){
-                    case 'moto':
-                    case 'carro':
-                        $obj = new Creator($opcao);
-                        $this->obj = $obj->getObj();
-                        echo ucfirst($opcao) . ' criado' . PHP_EOL;
-                        $this->mostrarObj($opcao);
-                        break;
-                    case 'sair':
-                        $sair = true;
-                        break;
-                    default:
-                        echo 'opção inválida' . PHP_EOL;
+                
+                if ($opcao === 'sair') {
+                    $sair = true;
+                    continue;
+                }
+                
+                $this->obj = VeiculoFactory::criarVeiculo($opcao);
+                
+                if ($this->obj) {
+                    echo ucfirst($opcao) . ' criado' . PHP_EOL;
+                    $this->mostrarObj($opcao);
+                } else {
+                    echo 'opção inválida' . PHP_EOL;
                 }
             }
         }
